@@ -1,0 +1,206 @@
+/* ===== ثيم 2M — أسود + بيج ===== */
+:root {
+  --bg: #0a0907;
+  --bg-2: #12100d;
+  --panel: #171410;
+  --cream: #d9cebb;
+  --cream-dim: #9b927f;
+  --line: rgba(217, 206, 187, .18);
+  --radius: 14px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--cream);
+  font-family: 'Cairo', sans-serif;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+
+/* ===== الهيدر ===== */
+.topbar {
+  position: fixed; inset: 0 0 auto 0; z-index: 30;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 5vw;
+  background: linear-gradient(to bottom, rgba(10,9,7,.92), rgba(10,9,7,0));
+  backdrop-filter: blur(6px);
+}
+.brand { display: flex; align-items: center; gap: 8px; }
+.brand .crown { width: 26px; color: var(--cream); }
+.brand-mark { font-family: 'Permanent Marker', cursive; font-size: 30px; letter-spacing: 1px; }
+.nav { display: flex; gap: 28px; font-size: 15px; color: var(--cream-dim); }
+.nav a:hover { color: var(--cream); }
+.cart-btn {
+  position: relative; background: none; border: 1px solid var(--line);
+  color: var(--cream); width: 44px; height: 44px; border-radius: 50%;
+  display: grid; place-items: center; transition: .25s;
+}
+.cart-btn:hover { background: var(--cream); color: var(--bg); }
+.cart-count {
+  position: absolute; top: -6px; left: -6px; min-width: 20px; height: 20px;
+  border-radius: 10px; background: var(--cream); color: var(--bg);
+  font-size: 12px; font-weight: 700; display: grid; place-items: center; padding: 0 5px;
+}
+
+/* ===== الهيرو ===== */
+.hero {
+  position: relative; min-height: 100vh; display: grid; place-items: center;
+  text-align: center; overflow: hidden;
+}
+.spotlight {
+  position: absolute; inset: 0;
+  background: linear-gradient(125deg, rgba(217,206,187,.22) 0%, rgba(217,206,187,.06) 22%, transparent 42%);
+  clip-path: polygon(0 0, 55% 0, 0 70%);
+  pointer-events: none;
+}
+.hero-inner { position: relative; padding: 90px 20px 40px; }
+.hero-crown { width: 70px; color: var(--cream); filter: drop-shadow(0 4px 10px rgba(0,0,0,.8)); margin-bottom: -6px; }
+.logo-script {
+  font-family: 'Permanent Marker', cursive; font-weight: 400;
+  font-size: clamp(120px, 28vw, 250px); line-height: 1; letter-spacing: 4px;
+  color: var(--cream);
+  text-shadow: 3px 4px 0 #000, 0 12px 40px rgba(0,0,0,.7);
+  transform: rotate(-4deg);
+}
+.logo-script.small { font-size: 56px; transform: none; }
+.logo-word {
+  font-family: 'Montserrat', sans-serif; font-weight: 400;
+  font-size: clamp(22px, 5vw, 42px); letter-spacing: .6em; margin-top: 6px;
+  padding-inline-start: .6em; text-shadow: 2px 3px 0 #000;
+}
+.tagline {
+  font-family: 'Montserrat', sans-serif; font-weight: 300;
+  font-size: clamp(11px, 2.4vw, 15px); letter-spacing: .32em; color: var(--cream-dim);
+  margin-top: 14px;
+}
+.divider { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 22px 0 34px; color: var(--cream); }
+.divider span { width: 70px; height: 1px; background: var(--cream-dim); }
+.divider i { font-style: normal; font-size: 14px; }
+.divider.small { margin: 10px 0 36px; }
+
+/* ===== الأزرار ===== */
+.btn {
+  display: inline-block; border: 1px solid var(--cream); background: transparent;
+  color: var(--cream); padding: 13px 38px; border-radius: 999px;
+  font-size: 16px; font-weight: 600; letter-spacing: .04em; transition: .25s;
+}
+.btn:hover { background: var(--cream); color: var(--bg); box-shadow: 0 8px 30px rgba(217,206,187,.18); }
+.btn.full { width: 100%; text-align: center; }
+
+/* ===== الأقسام ===== */
+.section { max-width: 1180px; margin: 0 auto; padding: 90px 5vw 30px; text-align: center; }
+.section-title { font-size: clamp(26px, 4vw, 38px); font-weight: 700; letter-spacing: .04em; }
+.about p { max-width: 640px; margin: 0 auto; color: var(--cream-dim); font-size: 18px; }
+
+/* ===== كروت المنتجات ===== */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 26px; }
+.card {
+  background: linear-gradient(160deg, var(--panel), var(--bg-2));
+  border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 22px; text-align: right; transition: .3s;
+}
+.card:hover { transform: translateY(-6px); border-color: var(--cream-dim); box-shadow: 0 18px 40px rgba(0,0,0,.6); }
+.thumb {
+  aspect-ratio: 1 / 1; border-radius: 10px; display: grid; place-items: center;
+  background: radial-gradient(circle at 30% 20%, rgba(217,206,187,.14), transparent 60%), #0d0b09;
+  margin-bottom: 16px;
+}
+.thumb svg { width: 78%; filter: drop-shadow(0 10px 14px rgba(0,0,0,.7)); }
+.thumb { overflow: hidden; }
+.thumb img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.item .mini { overflow: hidden; }
+.item .mini img { width: 100%; height: 100%; object-fit: contain; }
+.card h3 { font-size: 19px; font-weight: 700; }
+.card .price { color: var(--cream-dim); margin: 2px 0 14px; font-family: 'Montserrat', 'Cairo', sans-serif; }
+.opts { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
+.sizes { display: flex; gap: 6px; }
+.sizes button {
+  width: 36px; height: 36px; border-radius: 8px; background: transparent;
+  border: 1px solid var(--line); color: var(--cream-dim); font-size: 13px; transition: .2s;
+}
+.sizes button.active, .sizes button:hover { border-color: var(--cream); color: var(--cream); background: rgba(217,206,187,.1); }
+.card .btn { width: 100%; padding: 11px; font-size: 15px; }
+
+/* ===== الفورم ===== */
+.form {
+  max-width: 720px; margin: 0 auto; text-align: right;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px;
+}
+.form label { display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: var(--cream-dim); }
+.form .full { grid-column: 1 / -1; }
+.form input, .form select, .form textarea {
+  background: var(--bg); border: 1px solid var(--line); color: var(--cream);
+  border-radius: 10px; padding: 12px 14px; font: inherit; outline: none; transition: .2s;
+}
+.form input:focus, .form select:focus, .form textarea:focus { border-color: var(--cream); }
+.summary { padding: 14px; border: 1px dashed var(--line); border-radius: 10px; color: var(--cream-dim); font-size: 15px; }
+.summary b { color: var(--cream); }
+
+/* ===== الفوتر ===== */
+.footer { text-align: center; padding: 70px 20px 40px; margin-top: 60px; border-top: 1px solid var(--line); }
+.footer .copy { color: var(--cream-dim); font-size: 13px; margin-top: 16px; }
+
+/* ===== درج السلة ===== */
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,.65); opacity: 0; pointer-events: none; transition: .3s; z-index: 40; }
+.overlay.show { opacity: 1; pointer-events: auto; }
+.drawer {
+  position: fixed; top: 0; bottom: 0; left: 0; width: min(400px, 92vw); z-index: 50;
+  background: var(--bg-2); border-right: 1px solid var(--line);
+  display: flex; flex-direction: column; transform: translateX(-100%); transition: transform .35s ease;
+}
+.drawer.open { transform: translateX(0); }
+.drawer-head { display: flex; justify-content: space-between; align-items: center; padding: 20px 22px; border-bottom: 1px solid var(--line); }
+.drawer-head button { background: none; border: none; color: var(--cream); font-size: 20px; }
+.drawer-body { flex: 1; overflow-y: auto; padding: 16px 22px; }
+.empty { text-align: center; color: var(--cream-dim); margin-top: 60px; }
+.item { display: grid; grid-template-columns: 64px 1fr auto; gap: 12px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.item .mini { width: 64px; height: 64px; border-radius: 8px; background: #0d0b09; display: grid; place-items: center; }
+.item .mini svg { width: 80%; }
+.item h4 { font-size: 15px; }
+.item small { color: var(--cream-dim); }
+.qty { display: inline-flex; align-items: center; gap: 10px; margin-top: 6px; }
+.qty button { width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--line); background: none; color: var(--cream); }
+.qty button:hover { background: var(--cream); color: var(--bg); }
+.item .remove { background: none; border: none; color: var(--cream-dim); font-size: 18px; }
+.drawer-foot { padding: 20px 22px; border-top: 1px solid var(--line); display: grid; gap: 14px; }
+.total { display: flex; justify-content: space-between; font-size: 18px; }
+
+/* ===== موبايل ===== */
+@media (max-width: 640px) {
+  .nav { display: none; }
+  .form { grid-template-columns: 1fr; padding: 20px; }
+  .section { padding-top: 70px; }
+}
+.card .price { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.card .price .old { opacity: .6; text-decoration: line-through; text-decoration-thickness: 1.5px; }
+.card .price .now { color: var(--cream); font-weight: 700; }
+.card .price .badge { background: var(--cream); color: var(--bg); font-size: 12px; font-weight: 700; padding: 1px 9px; border-radius: 999px; }
+.socials { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+.socials a {
+  border: 1px solid var(--line); color: var(--cream-dim); border-radius: 999px;
+  padding: 8px 20px; font-size: 14px; transition: .25s;
+}
+.socials a:hover { border-color: var(--cream); color: var(--bg); background: var(--cream); }
+.thumb img { cursor: zoom-in; }
+.lightbox {
+  position: fixed; inset: 0; z-index: 100; display: grid; place-items: center;
+  background: rgba(5, 4, 3, .92); backdrop-filter: blur(6px);
+  opacity: 0; pointer-events: none; transition: opacity .3s; padding: 24px;
+}
+.lightbox.show { opacity: 1; pointer-events: auto; }
+.lightbox img {
+  max-width: min(94vw, 900px); max-height: 90vh; object-fit: contain; cursor: default;
+  border-radius: 12px; box-shadow: 0 30px 80px rgba(0,0,0,.7);
+  transform: scale(.94); transition: transform .3s ease;
+}
+.lightbox.show img { transform: scale(1); }
+.lb-close {
+  position: absolute; top: 18px; left: 18px; width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(10,9,7,.7); border: 1px solid var(--line); color: var(--cream); font-size: 18px;
+}
+.lb-close:hover { background: var(--cream); color: var(--bg); }
