@@ -8,7 +8,14 @@ const PAYMENTS = {
 };
 // ===== المنتجات =====
 // عدّل المنتجات من هنا. كل منتج سطر واحد:
-// id: رقم مش مكرر | name: الاسم | price: السعر | color: لون الرسمة | img: مسار الصورة (اختياري)
+const products = [
+  { id: 1, name: 'Black',       price: 650, oldPrice: 850, color: '#15120f', img: 'images/black.jpeg' },
+  { id: 2, name: 'Ganzari',     price: 650, oldPrice: 850, color: '#02628b', img: 'images/Ganzari.jpeg' },
+  { id: 3, name: 'White',       price: 650, oldPrice: 850, color: '#2b2824', img: 'images/white.jpeg' },
+  { id: 4, name: 'Olive Green', price: 650, oldPrice: 850, color: '#213302', img: 'images/Olive Green.jpeg' },
+  { id: 5, name: 'Warm Beige',  price: 650, oldPrice: 850, color: '#C4B197', img: 'images/Warm Beige.jpeg' },
+  { id: 6, name: 'Pink',        price: 650, oldPrice: 850, color: '#FFC0CB', img: 'images/pink.jpeg' }
+];
 const SIZES = ['S', 'M', 'L', 'XL'];
 
 // ===== رسمة الهودي (SVG) =====
@@ -188,9 +195,13 @@ document.addEventListener('click', (e) => {
 });
 lightbox.addEventListener('click', (e) => { if (e.target !== lbImg) closeLightbox(); });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+renderProducts();
+renderCart();
+
 function showPayNote() {
-  const v = document.querySelector('input[name="pay"]:checked').value;
-  $('#payNote').innerHTML = PAYMENTS[v];
+  const sel = document.querySelector('input[name="pay"]:checked');
+  const note = $('#payNote');
+  if (sel && note) note.innerHTML = PAYMENTS[sel.value];
 }
 document.querySelectorAll('input[name="pay"]').forEach(r => r.addEventListener('change', showPayNote));
 showPayNote();
