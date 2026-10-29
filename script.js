@@ -1,5 +1,40 @@
 // ===== إعدادات =====
-const WHATSAPP_NUMBER = '201044012465'; // غيّره برقمك بصيغة دولية بدون + (مثال: 201012345678)
+const WHATSAPP_NUMBER = '201044012465'; 
+// غيّره برقمك بصيغة دولية بدون + (مثال: 201012345678)
+// إعدادات رفع صور العملاء
+const CLOUDINARY_CLOUD_NAME = 'dnxe06ak';
+const CLOUDINARY_UPLOAD_PRESET = '2m hoodis';
+
+// رفع صورة التصميم وإرجاع رابطها
+async function uploadProof(file) {
+  if (!file || !file.type.startsWith('image/')) {
+    throw new Error('الملف يجب أن يكون صورة');
+  }
+
+  if (file.size > 8 * 1024 * 1024) {
+    throw new Error('حجم الصورة يجب ألا يتجاوز 8 ميجابايت');
+  }
+
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+
+  const response = await fetch(
+    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+    {
+      method: 'POST',
+      body: formData
+    }
+  );
+
+  const result = await response.json();
+
+  if (!response.ok || !result.secure_url) {
+    throw new Error(result.error?.message || 'فشل رفع الصورة');
+  }
+
+  return result.secure_url;
+}
 const CURRENCY = 'ج.م';
 const PAYMENTS = {
   'الدفع عند الاستلام': 'هتدفع للمندوب لما الطلب يوصلك.',
