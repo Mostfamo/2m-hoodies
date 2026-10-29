@@ -168,7 +168,7 @@ $('#orderForm').addEventListener('submit', (e) => {
     `الاسم: ${f.get('name')}`,
     `الموبايل: ${f.get('phone')}`,
     `المحافظة: ${f.get('gov')}`,
-    `العنوان: ${f.get('address')}`    `العنوان: ${f.get('address')}`,
+    `العنوان: ${f.get('address')}` ,   `العنوان: ${f.get('address')}`,
     `طريقة الدفع: ${f.get('pay')}`
   ].join('\n');
 
