@@ -7,7 +7,7 @@ const CURRENCY = 'ج.م';
 // id: رقم مش مكرر | name: الاسم | price: السعر | color: لون الرسمة | img: مسار الصورة (اختياري)
 const products = [
   { id: 1, name: 'Shadow Black',     price: 650, oldPrice: 850,   color: '#15120f', img: 'images/hoodie-grey-card.jpg' },
-  { id: 2, name: 'Ganzari',     price: 850,  color: '#cdbfa6' , img: 'images/Ganzari.jpeg'},
+  { id: 2, name: 'Ganzari',     price: 650, oldPrice: 850, color: '#cdbfa6' , img: 'images/Ganzari.jpeg'},
   { id: 3, name: 'Charcoal Crown',   price: 920,  color: '#2b2824' },
   { id: 4, name: 'Mocha Night',      price: 920,  color: '#4a3d31' },
   { id: 5, name: 'Stone Grey',       price: 880,  color: '#6f6a62' },
