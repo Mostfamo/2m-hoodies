@@ -1,18 +1,14 @@
 // ===== إعدادات =====
 const WHATSAPP_NUMBER = '201044012465'; // غيّره برقمك بصيغة دولية بدون + (مثال: 201012345678)
 const CURRENCY = 'ج.م';
-
+const PAYMENTS = {
+  'الدفع عند الاستلام': 'هتدفع للمندوب لما الطلب يوصلك.',
+  'إنستاباي': 'حوّل على: <b>mohamedmosaabomosa@instapay</b> وابعت صورة التحويل على واتساب.',
+  'فودافون كاش': 'حوّل على رقم: <b>01044012465</b> وابعت صورة التحويل على واتساب.'
+};
 // ===== المنتجات =====
 // عدّل المنتجات من هنا. كل منتج سطر واحد:
 // id: رقم مش مكرر | name: الاسم | price: السعر | color: لون الرسمة | img: مسار الصورة (اختياري)
-const products = [
-  { id: 1, name: 'Black',     price: 650, oldPrice: 850,   color: '#15120f', img: 'images/black.jpeg' },
-  { id: 2, name: 'Ganzari',     price: 650, oldPrice: 850, color: '#02628b' , img: 'images/Ganzari.jpeg'},
-  { id: 3, name: 'white',   price: 650, oldPrice: 850,  color: '#2b2824', img: 'images/white.jpeg' },
-  { id: 4, name: 'Olive Green',      price: 650, oldPrice: 850,  color: '#213302', img: 'images/Olive Green.jpeg' },
-  { id: 5, name: 'Stone Grey',       price: 650, oldPrice: 850,  color: '#C4B197' , img: 'images/Warm Beige.jpeg'},
-  { id: 6, name: 'pink', price: 650, oldPrice: 850, color: '#FFC0CB', img: 'images/pink.jpeg' },
-];
 const SIZES = ['S', 'M', 'L', 'XL'];
 
 // ===== رسمة الهودي (SVG) =====
@@ -165,7 +161,8 @@ $('#orderForm').addEventListener('submit', (e) => {
     `الاسم: ${f.get('name')}`,
     `الموبايل: ${f.get('phone')}`,
     `المحافظة: ${f.get('gov')}`,
-    `العنوان: ${f.get('address')}`
+    `العنوان: ${f.get('address')}`    `العنوان: ${f.get('address')}`,
+    `طريقة الدفع: ${f.get('pay')}`
   ].join('\n');
 
   window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
@@ -191,6 +188,12 @@ document.addEventListener('click', (e) => {
 });
 lightbox.addEventListener('click', (e) => { if (e.target !== lbImg) closeLightbox(); });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+function showPayNote() {
+  const v = document.querySelector('input[name="pay"]:checked').value;
+  $('#payNote').innerHTML = PAYMENTS[v];
+}
+document.querySelectorAll('input[name="pay"]').forEach(r => r.addEventListener('change', showPayNote));
+showPayNote();
 // ===== تشغيل =====
 renderProducts();
 renderCart();

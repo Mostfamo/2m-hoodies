@@ -82,6 +82,13 @@
       <label class="full">العنوان بالتفصيل
         <textarea name="address" rows="3" required placeholder="الشارع، المبنى، علامة مميزة"></textarea>
       </label>
+      <fieldset class="pay full">
+  <legend>طريقة الدفع</legend>
+  <label class="opt"><input type="radio" name="pay" value="الدفع عند الاستلام" checked> <span>الدفع عند الاستلام</span></label>
+  <label class="opt"><input type="radio" name="pay" value="إنستاباي"> <span>إنستاباي</span></label>
+  <label class="opt"><input type="radio" name="pay" value="فودافون كاش"> <span>فودافون كاش</span></label>
+  <p class="pay-note" id="payNote"></p>
+</fieldset>
       <div class="summary full" id="orderSummary">السلة فاضية</div>
       <button type="submit" class="btn full">ابعت الطلب على واتساب</button>
     </form>
