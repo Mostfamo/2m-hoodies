@@ -149,6 +149,7 @@ $('#goCheckout').addEventListener('click', () => openCart(false));
 // ===== إرسال الطلب على واتساب =====
 $('#orderForm').addEventListener('submit', async (e) => {
   e.preventDefault();
+  const btn = e.submitter || $('#orderForm button[type="submit"]');
   if (!cart.length) { alert('ضيف منتجات للسلة الأول'); return; }
 
   const f = new FormData(e.target);
@@ -190,7 +191,7 @@ $('#orderForm').addEventListener('submit', async (e) => {
     `الاسم: ${f.get('name')}`,
     `الموبايل: ${f.get('phone')}`,
     `المحافظة: ${f.get('gov')}`,
-    `العنوان: ${f.get('address')}` ,   `العنوان: ${f.get('address')}`,
+    `العنوان: ${f.get('address')}` ,  
     printLine,
     `طريقة الدفع: ${f.get('pay')}`
   ].join('\n');
