@@ -16,7 +16,7 @@ const products = [
   { id: 5, name: 'Warm Beige',  price: 650, oldPrice: 850, color: '#C4B197', img: 'images/Warm Beige.jpeg' },
   { id: 6, name: 'Pink',        price: 650, oldPrice: 850, color: '#FFC0CB', img: 'images/pink.jpeg' }
 ];
-const SIZES = ['S', 'M', 'L', 'XL'];
+const SIZES = ['M', 'L', 'XL' , '2XL'];
 
 // ===== رسمة الهودي (SVG) =====
 function hoodieSVG(color) {
