@@ -215,3 +215,13 @@ button { font-family: inherit; cursor: pointer; }
 .form .pay input[type=radio] { width: 18px; height: 18px; padding: 0; accent-color: #d9cebb; }
 .pay-note { font-size: 14px; color: var(--cream-dim); }
 .pay-note b { color: var(--cream); }
+[hidden] { display: none !important; }
+.designs { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 10px; }
+.design {
+  background: #0d0b09; border: 1px solid var(--line); border-radius: 10px;
+  overflow: hidden; padding: 0; color: var(--cream-dim); transition: .2s;
+}
+.design img { width: 100%; aspect-ratio: 1 / 1; object-fit: contain; display: block; }
+.design span { display: block; font-size: 12px; padding: 4px 6px; text-align: center; }
+.design:hover { border-color: var(--cream-dim); }
+.design.active { border-color: var(--cream); box-shadow: 0 0 0 2px var(--cream); color: var(--cream); }

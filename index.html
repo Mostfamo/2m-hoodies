@@ -83,6 +83,30 @@
         <textarea name="address" rows="3" required placeholder="الشارع، المبنى، علامة مميزة"></textarea>
       </label>
       <fieldset class="pay full">
+  <legend>طباعة على الهودي (اختياري)</legend>
+  <label class="opt"><input type="radio" name="print" value="none" checked> <span>من غير طباعة</span></label>
+  <label class="opt"><input type="radio" name="print" value="design"> <span>اختار تصميم من عندنا</span></label>
+  <label class="opt"><input type="radio" name="print" value="custom"> <span>هبعت تصميمي أنا</span></label>
+
+  <div id="designBox" hidden><div class="designs" id="designGrid"></div></div>
+
+  <div id="customBox" hidden>
+    <label>ارفع صورة التصميم
+      <input type="file" id="printFile" accept="image/*">
+    </label>
+  </div>
+
+  <div id="placeBox" hidden>
+    <label>مكان الطباعة
+      <select name="place">
+        <option>الصدر</option>
+        <option>الضهر</option>
+        <option>الصدر والضهر</option>
+      </select>
+    </label>
+  </div>
+</fieldset>
+      <fieldset class="pay full">
   <legend>طريقة الدفع</legend>
   <label class="opt"><input type="radio" name="pay" value="الدفع عند الاستلام" checked> <span>الدفع عند الاستلام</span></label>
   <label class="opt"><input type="radio" name="pay" value="إنستاباي"> <span>إنستاباي</span></label>

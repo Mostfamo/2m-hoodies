@@ -147,7 +147,7 @@ $('#overlay').addEventListener('click', () => openCart(false));
 $('#goCheckout').addEventListener('click', () => openCart(false));
 
 // ===== إرسال الطلب على واتساب =====
-$('#orderForm').addEventListener('submit', (e) => {
+$('#orderForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   if (!cart.length) { alert('ضيف منتجات للسلة الأول'); return; }
 
@@ -157,7 +157,29 @@ $('#orderForm').addEventListener('submit', (e) => {
     const p = products.find(x => x.id === it.id);
     return `• ${p.name} | مقاس ${it.size} | ${it.qty} × ${p.price}`;
   });
+  let printLine = 'الطباعة: من غير طباعة';
+  const printMode = f.get('print');
 
+  if (printMode === 'design') {
+    if (!selectedDesign) { alert('اختار التصميم الأول'); return; }
+    printLine = `الطباعة: تصميم "${selectedDesign.name}" (رقم ${selectedDesign.id}) | المكان: ${f.get('place')}`;
+  }
+
+  if (printMode === 'custom') {
+    const pf = $('#printFile').files[0];
+    if (!pf) { alert('ارفع صورة التصميم الأول'); return; }
+    if (pf.size > 8 * 1024 * 1024) { alert('صورة التصميم كبيرة، اختار صورة أصغر من 8 ميجا'); return; }
+    btn.disabled = true; btn.textContent = 'جاري رفع التصميم...';
+    try {
+      const printUrl = await uploadProof(pf);
+      printLine = `الطباعة: تصميم العميل ${printUrl} | المكان: ${f.get('place')}`;
+    } catch (err) {
+      alert('حصلت مشكلة في رفع التصميم، جرّب تاني');
+      btn.disabled = false; btn.textContent = 'ابعت الطلب على واتساب';
+      return;
+    }
+    btn.disabled = false; btn.textContent = 'ابعت الطلب على واتساب';
+  }
   const msg = [
     '🖤 طلب جديد من 2M Hoodies',
     '',
@@ -169,6 +191,7 @@ $('#orderForm').addEventListener('submit', (e) => {
     `الموبايل: ${f.get('phone')}`,
     `المحافظة: ${f.get('gov')}`,
     `العنوان: ${f.get('address')}` ,   `العنوان: ${f.get('address')}`,
+    printLine,
     `طريقة الدفع: ${f.get('pay')}`
   ].join('\n');
 
@@ -205,6 +228,48 @@ function showPayNote() {
 }
 document.querySelectorAll('input[name="pay"]').forEach(r => r.addEventListener('change', showPayNote));
 showPayNote();
+// ===== الطباعة على الهودي =====
+const DESIGNS = [
+  { id: 1, name: 'تاج',     img: 'designs/1.jpeg' },
+  {id: 2, name: 'تصميم 2', img: 'designs/2.jpeg' },
+  { id: 3, name: 'تصميم 3', img: 'designs/3.jpeg' },
+  {id: 2, name: 'تصميم 2', img: 'designs/4.jpeg' },
+  {id: 2, name: 'تصميم 2', img: 'designs/5.jpeg' },
+  {id: 2, name: 'تصميم 2', img: 'designs/6.jpeg' },
+  {id: 2, name: 'تصميم 2', img: 'designs/7.jpeg' },
+  {id: 2, name: 'تصميم 2', img: 'designs/8.jpeg' },
+  {id: 2, name: 'تصميم 2', img: 'designs/9.jpeg' },
+  {id: 2, name: 'تصميم 2', img: 'designs/10.jpeg' },
+  {id: 2, name: 'تصميم 2', img: 'designs/11.jpeg' },
+  {id: 2, name: 'تصميم 2', img: 'designs/13.jpeg' },
+  {id: 2, name: 'تصميم 2', img: 'designs/14.jpeg' },
+];
+let selectedDesign = null;
+
+function renderDesigns() {
+  $('#designGrid').innerHTML = DESIGNS.map(d => `
+    <button type="button" class="design" data-id="${d.id}">
+      <img src="${d.img}" alt="${d.name}"><span>${d.name}</span>
+    </button>`).join('');
+}
+
+function updatePrintUI() {
+  const sel = document.querySelector('input[name="print"]:checked');
+  const mode = sel ? sel.value : 'none';
+  $('#designBox').hidden = mode !== 'design';
+  $('#customBox').hidden = mode !== 'custom';
+  $('#placeBox').hidden = mode === 'none';
+}
+
+renderDesigns();
+updatePrintUI();
+document.querySelectorAll('input[name="print"]').forEach(r => r.addEventListener('change', updatePrintUI));
+$('#designGrid').addEventListener('click', (e) => {
+  const b = e.target.closest('.design');
+  if (!b) return;
+  selectedDesign = DESIGNS.find(d => d.id === +b.dataset.id);
+  document.querySelectorAll('.design').forEach(x => x.classList.toggle('active', x === b));
+});
 // ===== تشغيل =====
 renderProducts();
 renderCart();
