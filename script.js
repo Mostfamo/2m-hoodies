@@ -1,4 +1,4 @@
-// ===== إعدادات =====ldset
+// ===== إعدادات =====
 const WHATSAPP_NUMBER = '201044012465'; 
 // غيّره برقمك بصيغة دولية بدون + (مثال: 201012345678)
 // إعدادات رفع صور العملاء
@@ -300,10 +300,8 @@ $('#openCart').addEventListener('click', () => openCart(true));
 $('#closeCart').addEventListener('click', () => openCart(false));
 $('#overlay').addEventListener('click', () => openCart(false));
 $('#goCheckout').addEventListener('click', () => openCart(false));
-
-
-// ===== إرسال الطلب لجوجل شيت وواتساب =====
-$('#orderForm').addEventListener('submit', async (e) => {
+// ===== إرسال الطلب لجوجل شيت عبر Google Apps Script وواتساب معاً =====
+$('#orderForm').addEventListener('submit', (e) => {
   e.preventDefault();
   if (!cart.length) { alert('ضيف منتجات للسلة الأول'); return; }
 
@@ -314,32 +312,32 @@ $('#orderForm').addEventListener('submit', async (e) => {
     return `• ${p.name} | مقاس ${it.size} | ${it.qty} × ${p.price}`;
   }).join(' - ');
 
-  /* 
-    --- كود الطباعة المحفوظ عندك (مخفي لحين تفعيل الخدمة) ---
-    let printLine = 'الطباعة: من غير طباعة';
-    const printMode = f.get('print');
-    if (printMode === 'design' && selectedDesign) {
-      printLine = `الطباعة: تصميم "${selectedDesign.name}" | المكان: ${f.get('place')}`;
-    }
-  */
+  // قراءة بيانات الفورم بشكل صحيح وصريح
+  const nameVal = f.get('name') || '';
+  const phoneVal = f.get('phone') || '';
+  const govVal = f.get('gov') || '';
+  const addressVal = f.get('address') || '';
+  const payVal = f.get('pay') || '';
 
-  const orderData = {
-    name: f.get('name'),
-    phone: f.get('phone'),
-    gov: f.get('gov'),
-    address: f.get('address'),
-    items: lines,
-    total: total + ` ${CURRENCY}`,
-    pay: f.get('pay')
-  };
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbysz3fCoSBWR5BDUWTBGFdXQTLSHd34Qc-2I-OtkHZ4uSs-Ku_haw4t-SxqiccwuoOMNg/exec';
 
-  fetch('https://script.google.com/macros/s/AKfycbwEKGDAh9Cfty6AbmspOjcSsCeFf7NkzB5pv_mnoPh28tpUOToIFHHFgVSj-amLwC8/exec', {
+  // إرسال البيانات لجوجل شيت في الخلفية
+  fetch(scriptURL, {
     method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(orderData)
-  }).catch(err => console.log('Sheet Error:', err));
+    body: JSON.stringify({
+      "date": new Date().toLocaleString('ar-EG'),
+      "name": nameVal,
+      "phone": phoneVal,
+      "gov": govVal,
+      "address": addressVal,
+      "items": lines,
+      "total": total + ` ${CURRENCY}`,
+      "pay": payVal,
+      "status": "غير مكتمل"
+    })
+  }).catch(err => console.log('Script Error:', err));
 
+  // تجهيز رسالة واتساب وفتحها فوراً للعميل
   const msg = [
     '🖤 طلب جديد من 2M Hoodies',
     '',
@@ -350,17 +348,15 @@ $('#orderForm').addEventListener('submit', async (e) => {
     '',
     `الإجمالي: ${total} ${CURRENCY}`,
     '',
-    `الاسم: ${f.get('name')}`,
-    `الموبايل: ${f.get('phone')}`,
-    `المحافظة: ${f.get('gov')}`,
-    `العنوان: ${f.get('address')}`,
-    `طريقة الدفع: ${f.get('pay')}`
+    `الاسم: ${nameVal}`,
+    `الموبايل: ${phoneVal}`,
+    `المحافظة: ${govVal}`,
+    `العنوان: ${addressVal}`,
+    `طريقة الدفع: ${payVal}`
   ].join('\n');
 
   window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
 });
-const lightbox = $('#lightbox'), lbImg = $('#lbImg');
-
 function openLightbox(img) {
   lbImg.src = img.src;
   lbImg.alt = img.alt;
