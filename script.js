@@ -46,7 +46,7 @@ const PAYMENTS = {
 const products = [
   { id: 1, name: 'Black',       price: 550, oldPrice: 850, color: '#15120f', img: 'images/black.jpeg' },
   { id: 2, name: 'Ganzari',     price: 550, oldPrice: 850, color: '#02628b', img: 'images/Ganzari.jpeg' },
-  { id: 3, name: 'White',       price: 550, oldPrice: 850, color: '#2b2824', img: 'images/white.jpeg' },
+  { id: 3, name: 'White',       price: 550, oldPrice: 850, color: '#FFFFFF', img: 'images/white.jpeg' },
   { id: 4, name: 'Olive Green', price: 550, oldPrice: 850, color: '#213302', img: 'images/Olive Green.jpeg' },
   { id: 5, name: 'Warm Beige',  price: 550, oldPrice: 850, color: '#C4B197', img: 'images/Warm Beige.jpeg' },
   { id: 6, name: 'Taupe',        price: 550, oldPrice: 850, color: '#8C8275', img: 'images/Taupe.jpeg' },
