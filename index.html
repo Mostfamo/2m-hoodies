@@ -8,9 +8,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Montserrat:wght@300;400;500&family=Permanent+Marker&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 </head>
 <body>
-
+<!-- كرات ضوئية متحركة في الخلفية -->
+<div class="bg-glow orb-1"></div>
+<div class="bg-glow orb-2"></div>
   <!-- الهيدر -->
   <header class="topbar">
     <a href="#top" class="brand" aria-label="2M Hoodies">
@@ -42,28 +45,65 @@
       <p class="logo-word">HOODIES</p>
       <p class="tagline">MORE THAN JUST A HOODIE</p>
       <div class="divider"><span></span><i>✦</i><span></span></div>
+
+      <div class="ship-banner" hidden></div>
       <a href="#shop" class="btn">تسوّق دلوقتي</a>
     </div>
   </section>
 
   <!-- المنتجات -->
-  <section class="section" id="shop">
-    <h2 class="section-title">المجموعة</h2>
+  <section class="section" id="shop" data-aos="fade-up">
+      <h2 class="section-title">المجموعة</h2>
     <div class="divider small"><span></span><i>✦</i><span></span></div>
+      <!-- أزرار فلتر الألوان -->
+    <div class="color-filters" id="colorFilters">
+      <button type="button" class="filter-btn active" data-filter="all">الكل 🔥</button>
+      <button type="button" class="filter-btn" data-filter="Black">Black</button>
+      <button type="button" class="filter-btn" data-filter="Taupe">Taupe</button>
+      <button type="button" class="filter-btn" data-filter="Slate Blue">Slate Blue</button>
+      <button type="button" class="filter-btn" data-filter="Burgundy">Burgundy</button>
+      <button type="button" class="filter-btn" data-filter="Beige">Beige</button>
+      <button type="button" class="filter-btn" data-filter="Yellow">Yellow</button>
+    </div>
+  
+    <div class="offer" id="offerBanner" hidden></div>
     <div class="grid" id="productGrid"></div>
   </section>
 
   <!-- عنّا -->
-  <section class="section about" id="about">
+  <section class="section about" id="about" data-aos="fade-up">
     <h2 class="section-title">أكتر من مجرد هودي</h2>
     <div class="divider small"><span></span><i>✦</i><span></span></div>
     <p>قماش تقيل، قصّة مظبوطة، وستايل بيعرّف عنك من غير ما تتكلم. كل قطعة من 2M متصمّمة عشان تحس إنك لابس حاجة مختلفة.</p>
   </section>
-
+<!-- قسم آراء العملاء -->
+  <section class="section reviews" id="reviews" data-aos="fade-up">
+    <h2 class="section-title">آراء عيلتنا 🖤</h2>
+    <div class="divider small"><span></span><i>✦</i><span></span></div>
+    
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p>"الخامة تقيلة ومحترمة جداً، والقصّة مظبوطة بالملي على الجسم.. يستاهل كل جنيه بجد!"</p>
+        <span class="author">— أحمد محمود</span>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p>"التوصيل كان سريع، واللون البيج والأسود الحقيقة أحلى من الصور بكتير 🔥"</p>
+        <span class="author">— عمر الشريف</span>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p>"خدمة ممتازة، و2M بقى البراند المفضل عندي للـ Hoodies خلاص."</p>
+        <span class="author">— محمد صابر</span>
+      </div>
+    </div>
+  </section>
   <!-- إتمام الطلب -->
-  <section class="section" id="checkout-section">
+  <section class="section" id="checkout-section" data-aos="fade-up">
     <h2 class="section-title">إتمام الطلب</h2>
     <div class="divider small"><span></span><i>✦</i><span></span></div>
+    <div class="ship-banner" hidden></div>
     <form class="form" id="orderForm">
       <label>الاسم
         <input type="text" name="name" required placeholder="اسمك بالكامل">
@@ -82,37 +122,46 @@
       <label class="full">العنوان بالتفصيل
         <textarea name="address" rows="3" required placeholder="الشارع، المبنى، علامة مميزة"></textarea>
       </label>
-      <fieldset class="pay full">
+   <fieldset class="pay full">
   <legend>طباعة على الهودي (اختياري)</legend>
-  <label class="opt"><input type="radio" name="print" value="none" checked> <span>من غير طباعة</span></label>
-  <label class="opt"><input type="radio" name="print" value="design"> <span>اختار تصميم من عندنا</span></label>
-  <label class="opt"><input type="radio" name="print" value="custom"> <span>هبعت تصميمي أنا</span></label>
-
-  <div id="designBox" hidden><div class="designs" id="designGrid"></div></div>
-
-  <div id="customBox" hidden>
-    <label>ارفع صورة التصميم
-      <input type="file" id="printFile" accept="image/*">
-    </label>
+  
+  <!-- رسالة قريباً بدلاً من خيارات الطباعة -->
+  <div class="coming-soon-banner">
+    <span>🔒 خدمة الطباعة ستتوفر قريباً (Coming Soon)</span>
   </div>
 
-  <div id="placeBox" hidden>
-    <label>مكان الطباعة
-      <select name="place">
-        <option>الصدر</option>
-        <option>الضهر</option>
-        <option>الصدر والضهر</option>
-      </select>
-    </label>
+  <!-- الكود الأصلي مخفي بالكامل من غير مسح -->
+  <div class="print-original-content" style="display: none;">
+    <label class="opt"><input type="radio" name="print" value="none" checked> <span>من غير طباعة</span></label>
+    <label class="opt"><input type="radio" name="print" value="design"> <span>اختار تصميم من عندنا</span></label>
+    <label class="opt"><input type="radio" name="print" value="custom"> <span>هبعت تصميمي أنا</span></label>
+
+    <div id="designBox" hidden><div class="designs" id="designGrid"></div></div>
+
+    <div id="customBox" hidden>
+      <label>ارفع صورة التصميم
+        <input type="file" id="printFile" accept="image/*">
+      </label>
+    </div>
+
+    <div id="placeBox" hidden>
+      <label>مكان الطباعة
+        <select name="place">
+          <option>الصدر</option>
+          <option>الضهر</option>
+          <option>الصدر والضهر</option>
+        </select>
+      </label>
+    </div>
   </div>
-</fieldset>
-      <fieldset class="pay full">
-  <legend>طريقة الدفع</legend>
-  <label class="opt"><input type="radio" name="pay" value="الدفع عند الاستلام" checked> <span>الدفع عند الاستلام</span></label>
-  <label class="opt"><input type="radio" name="pay" value="إنستاباي"> <span>إنستاباي</span></label>
-  <label class="opt"><input type="radio" name="pay" value="فودافون كاش"> <span>فودافون كاش</span></label>
-  <p class="pay-note" id="payNote"></p>
-</fieldset>
+<fieldset class="pay full">
+        <legend>طريقة الدفع</legend>
+        <label class="opt"><input type="radio" name="pay" value="الدفع عند الاستلام" checked> <span>الدفع عند الاستلام</span></label>
+        <label class="opt"><input type="radio" name="pay" value="إنستاباي"> <span>إنستاباي</span></label>
+        <label class="opt"><input type="radio" name="pay" value="فودافون كاش"> <span>فودافون كاش</span></label>
+        <p class="pay-note" id="payNote"></p>
+      </fieldset>
+
       <div class="summary full" id="orderSummary">السلة فاضية</div>
       <button type="submit" class="btn full">ابعت الطلب على واتساب</button>
     </form>
@@ -139,6 +188,7 @@
     </div>
     <div class="drawer-body" id="cartItems"></div>
     <div class="drawer-foot">
+      <div class="saving" id="cartSaving"></div>
       <div class="total"><span>الإجمالي</span><strong id="cartTotal">0 ج.م</strong></div>
       <a href="#checkout-section" class="btn full" id="goCheckout">كمّل الطلب</a>
     </div>
@@ -147,7 +197,19 @@
   <button class="lb-close" id="lbClose" aria-label="إغلاق">✕</button>
   <img id="lbImg" src="" alt="">
 </div>
+<!-- زرار العودة للأعلى -->
+  <button id="scrollTopBtn" class="scroll-top-btn" aria-label="العودة للأعلى">↑</button>
 
+  <!-- إشعار سريّع عند إضافة منتج للسلة (Toast) -->
+  <div id="toastNotification" class="toast-notification">تمت الإضافة للسلة بنجاح 🖤</div>
   <script src="script.js"></script>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 800, // سرعة الحركة بالمللي ثانية
+    once: true     // الحركة تحصل مرة واحدة بس وأنت نازل في الصفحة
+  });
+
+</script>
 </body>
 </html>

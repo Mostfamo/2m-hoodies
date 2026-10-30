@@ -1,4 +1,4 @@
-// ===== إعدادات =====
+// ===== إعدادات =====ldset
 const WHATSAPP_NUMBER = '201044012465'; 
 // غيّره برقمك بصيغة دولية بدون + (مثال: 201012345678)
 // إعدادات رفع صور العملاء
@@ -44,15 +44,43 @@ const PAYMENTS = {
 // ===== المنتجات =====
 // عدّل المنتجات من هنا. كل منتج سطر واحد:
 const products = [
-  { id: 1, name: 'Black',       price: 650, oldPrice: 850, color: '#15120f', img: 'images/black.jpeg' },
-  { id: 2, name: 'Ganzari',     price: 650, oldPrice: 850, color: '#02628b', img: 'images/Ganzari.jpeg' },
-  { id: 3, name: 'White',       price: 650, oldPrice: 850, color: '#2b2824', img: 'images/white.jpeg' },
-  { id: 4, name: 'Olive Green', price: 650, oldPrice: 850, color: '#213302', img: 'images/Olive Green.jpeg' },
-  { id: 5, name: 'Warm Beige',  price: 650, oldPrice: 850, color: '#C4B197', img: 'images/Warm Beige.jpeg' },
-  { id: 6, name: 'Pink',        price: 650, oldPrice: 850, color: '#FFC0CB', img: 'images/pink.jpeg' }
+  { id: 1, name: 'Black',       price: 550, oldPrice: 850, color: '#15120f', img: 'images/black.jpeg' },
+  { id: 2, name: 'Ganzari',     price: 550, oldPrice: 850, color: '#02628b', img: 'images/Ganzari.jpeg' },
+  { id: 3, name: 'White',       price: 550, oldPrice: 850, color: '#2b2824', img: 'images/white.jpeg' },
+  { id: 4, name: 'Olive Green', price: 550, oldPrice: 850, color: '#213302', img: 'images/Olive Green.jpeg' },
+  { id: 5, name: 'Warm Beige',  price: 550, oldPrice: 850, color: '#C4B197', img: 'images/Warm Beige.jpeg' },
+  { id: 6, name: 'Taupe',        price: 550, oldPrice: 850, color: '#8C8275', img: 'images/Taupe.jpeg' },
+  { id: 7, name: 'Slate Blue',        price: 550, oldPrice: 850, color: '#4B586B', img: 'images/Slate Blue.jpeg' },
+  { id: 8, name: 'Burgundy',        price: 550, oldPrice: 850, color: '#5C2A33', img: 'images/Burgundy.jpeg' },
+  { id: 9, name: 'Light Blue',        price: 550, oldPrice: 850, color: '#C5D7E8', img: 'images/Light Blue.jpeg' },
+  { id: 10, name: 'Dark Brown',        price: 550, oldPrice: 850, color: '#3D281F', img: 'images/Dark Brown.jpeg' },
+  { id: 11, name: 'Beige',        price: 550, oldPrice: 850, color: '#E5D4B3', img: 'images/Beige.jpeg' },
+  { id: 12, name: 'Brown',        price: 550, oldPrice: 850, color: '#4A3325', img: 'images/Brown.jpeg' },
+  { id: 13, name: 'Charcoal Gray',        price: 550, oldPrice: 850, color: '#44474D', img: 'images/Charcoal Gray.jpeg' },
+  { id: 14, name: 'Yellow',        price: 550, oldPrice: 850, color: '#F3D86B', img: 'images/Yellow.jpeg' },
+  { id: 15, name: 'Pink',        price: 550, oldPrice: 850, color: '#FFC0CB', img: 'images/Pink.jpeg' }
 ];
-const SIZES = ['M', 'L', 'XL' , '2XL'];
+const SIZES = ['M', 'L', 'XL' , '2XL', '3XL'];
+// ===== العرض =====
+const OFFER = { on: true, qty: 2, price: 1050};   // كل 2 قطعة بـ 1100 (on: false يوقف العرض)
 
+function calcTotal() {
+  const prices = [];
+  cart.forEach(it => {
+    const p = products.find(x => x.id === it.id);
+    for (let i = 0; i < it.qty; i++) prices.push(p.price);
+  });
+  prices.sort((a, b) => b - a);
+  let total = 0, i = 0;
+  if (OFFER.on) {
+    for (; i + OFFER.qty <= prices.length; i += OFFER.qty) {
+      const group = prices.slice(i, i + OFFER.qty).reduce((a, b) => a + b, 0);
+      total += Math.min(group, OFFER.price);
+    }
+  }
+  for (; i < prices.length; i++) total += prices[i];
+  return total;
+}
 // ===== رسمة الهودي (SVG) =====
 function hoodieSVG(color) {
   return `
@@ -73,6 +101,7 @@ function visual(p) {
 }
 
 // ===== الحالة =====
+let currentFilter = 'all';
 let cart = JSON.parse(localStorage.getItem('2m-cart') || '[]');
 const selectedSize = {}; // id -> size
 
@@ -80,26 +109,48 @@ const $ = (s) => document.querySelector(s);
 const fmt = (n) => `${n.toLocaleString('ar-EG')} ${CURRENCY}`;
 const save = () => localStorage.setItem('2m-cart', JSON.stringify(cart));
 
-// ===== عرض المنتجات =====
 function renderProducts() {
-  $('#productGrid').innerHTML = products.map(p => {
+  const filteredProducts = currentFilter === 'all' 
+    ? products 
+    : products.filter(p => p.name.toLowerCase() === currentFilter.toLowerCase());
+
+  $('#productGrid').innerHTML = filteredProducts.map(p => {
     selectedSize[p.id] = selectedSize[p.id] || 'M';
+    const currentSize = selectedSize[p.id];
+    const stockCount = ((p.id * 7 + currentSize.charCodeAt(0)) % 4) + 1;
+
     return `
     <article class="card" data-id="${p.id}">
       <div class="thumb">${visual(p)}</div>
-      <h3>${p.name}</h3>
-      <p class="price">${p.oldPrice ? `<s class="old">${fmt(p.oldPrice)}</s>` : ''}<span class="now">${fmt(p.price)}</span>${p.oldPrice ? `<span class="badge">-${Math.round((1 - p.price / p.oldPrice) * 100)}%</span>` : ''}</p>
+      
+      <div class="product-title-row">
+        <h3>${p.name}</h3>
+        <button type="button" class="color-dot" style="background-color: ${p.color};" title="لون المنتج: ${p.name}" data-color-id="${p.id}"></button>
+      </div>
+
+      <p class="price">
+        ${p.oldPrice ? `<s class="old">${fmt(p.oldPrice)}</s>` : ''}
+        <span class="now">${fmt(p.price)}</span>
+        ${p.oldPrice ? `<span class="badge">-${Math.round((1 - p.price / p.oldPrice) * 100)}%</span>` : ''}
+      </p>
+      
+      <p class="stock-badge animate-stock" id="stock-${p.id}">🔥 متبقي ${stockCount} قطع فقط بالمقاس (${currentSize})</p>
+
       <div class="opts">
         <span>المقاس</span>
         <div class="sizes">
-          ${SIZES.map(s => `<button type="button" data-size="${s}" class="${s === 'M' ? 'active' : ''}">${s}</button>`).join('')}
+          ${SIZES.map(s => `<button type="button" data-size="${s}" class="${s === selectedSize[p.id] ? 'active' : ''}">${s}</button>`).join('')}
         </div>
       </div>
-      <button class="btn add" type="button">أضف للسلة</button>
+      
+      <div class="card-actions">
+        <button class="btn add" type="button">أضف للسلة</button>
+        <button class="btn quick-wa" type="button" data-quick-id="${p.id}">طلب سريع 💬</button>
+        <button class="btn share-btn" type="button" data-share-id="${p.id}" title="مشاركة المنتج">🔗</button>
+      </div>
     </article>`;
   }).join('');
 }
-
 // ===== السلة =====
 function renderCart() {
   const box = $('#cartItems');
@@ -126,10 +177,17 @@ function renderCart() {
   }
 
   const count = cart.reduce((a, b) => a + b.qty, 0);
-  const total = cart.reduce((a, b) => a + b.qty * products.find(x => x.id === b.id).price, 0);
+  const total = calcTotal();
   $('#cartCount').textContent = count;
   $('#cartTotal').textContent = fmt(total);
-
+  const full = cart.reduce((a, b) => a + b.qty * products.find(x => x.id === b.id).price, 0);
+  const saved = full - total;
+  const sv = $('#cartSaving');
+  if (sv) {
+    const rest = OFFER.qty - (count % OFFER.qty);
+    sv.textContent = saved > 0 ? `وفّرت ${fmt(saved)} 🎉`
+      : (OFFER.on && count > 0 && rest < OFFER.qty ? `ضيف ${rest} قطعة كمان وخد العرض` : '');
+  }
   $('#orderSummary').innerHTML = cart.length
     ? cart.map(it => {
         const p = products.find(x => x.id === it.id);
@@ -146,26 +204,89 @@ function openCart(open) {
 
 // ===== الأحداث =====
 document.addEventListener('click', (e) => {
-  const card = e.target.closest('.card');
-
-  // اختيار المقاس
-  const sizeBtn = e.target.closest('.sizes button');
-  if (sizeBtn && card) {
-    card.querySelectorAll('.sizes button').forEach(b => b.classList.remove('active'));
-    sizeBtn.classList.add('active');
-    selectedSize[+card.dataset.id] = sizeBtn.dataset.size;
+  // أزرار فلتر الألوان فوق المنتجات
+  const filterBtn = e.target.closest('.filter-btn');
+  if (filterBtn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    filterBtn.classList.add('active');
+    currentFilter = filterBtn.dataset.filter;
+    renderProducts();
+    return;
   }
 
-  // إضافة للسلة
-  if (e.target.closest('.add') && card) {
-    const id = +card.dataset.id, size = selectedSize[id];
+  // زرار مشاركة المنتج (نسخ الرابط أو مشاركته)
+  const shareBtn = e.target.closest('[data-share-id]');
+  if (shareBtn) {
+    const id = +shareBtn.dataset.shareId;
+    const p = products.find(x => x.id === id);
+    const shareText = `شاهد هودي ${p.name} الرائع من براند 2M Hoodies! 🖤`;
+    
+    if (navigator.share) {
+      navigator.share({ title: '2M Hoodies', text: shareText, url: window.location.href }).catch(() => {});
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert(`✅ تم نسخ رابط المنتج الخاص بـ (${p.name}) الحافظة!`);
+    }
+    return;
+  }
+
+  // التفاعل عند الضغط على نقطة اللون
+  const colorDot = e.target.closest('.color-dot');
+  if (colorDot) {
+    const id = +colorDot.dataset.colorId;
+    const p = products.find(x => x.id === id);
+    if (p) {
+      alert(`🎨 لون المنتج: ${p.name}\n🔖 كود الهيكسا: ${p.color}`);
+    }
+    return;
+  }
+
+  // تعريف الكارت والأزرار المشتركة بداخل الكارت
+  const card = e.target.closest('.card');
+
+  // زرار الطلب السريع عبر واتساب
+  const quickBtn = e.target.closest('.quick-wa');
+  if (quickBtn) {
+    const id = +quickBtn.dataset.quickId;
+    const p = products.find(x => x.id === id);
+    const size = selectedSize[id] || 'M';
+    const msg = `🖤 طلب سريع من الموقع:\n\n• المنتج: ${p.name}\n• المقاس: ${size}\n• السعر: ${p.price} ${CURRENCY}\n\nعايز أكمل الطلب معاك!`;
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+    return;
+  }
+
+  // اختيار المقاس وتحديث المخزون فوراً
+  const sizeBtn = e.target.closest('.sizes button');
+  if (sizeBtn && card) {
+    const id = +card.dataset.id;
+    const size = sizeBtn.dataset.size;
+    selectedSize[id] = size;
+    
+    card.querySelectorAll('.sizes button').forEach(b => b.classList.remove('active'));
+    sizeBtn.classList.add('active');
+
+    const newStock = ((id * 7 + size.charCodeAt(0)) % 4) + 1;
+    const stockEl = card.querySelector('.stock-badge');
+    if (stockEl) {
+      stockEl.innerHTML = `🔥 متبقي ${newStock} قطع فقط بالمقاس (${size})`;
+    }
+    return;
+  }
+
+  // إضافة للسلة (اشتغلت خلاص وزي الفل)
+  const addBtn = e.target.closest('.add');
+  if (addBtn && card) {
+    const id = +card.dataset.id, size = selectedSize[id] || 'M';
     const found = cart.find(i => i.id === id && i.size === size);
     found ? found.qty++ : cart.push({ id, size, qty: 1 });
     renderCart();
-    openCart(true);
+    
+    // إشعار السلة السريع
+    showToast('تمت الإضافة للسلة بنجاح 🖤');
+    return;
   }
 
-  // التحكم في السلة
+  // التحكم في كمية العناصر داخل السلة
   const act = e.target.closest('[data-act]');
   if (act) {
     const i = +act.dataset.i;
@@ -175,59 +296,64 @@ document.addEventListener('click', (e) => {
     renderCart();
   }
 });
-
 $('#openCart').addEventListener('click', () => openCart(true));
 $('#closeCart').addEventListener('click', () => openCart(false));
 $('#overlay').addEventListener('click', () => openCart(false));
 $('#goCheckout').addEventListener('click', () => openCart(false));
 
-// ===== إرسال الطلب على واتساب =====
+
+// ===== إرسال الطلب لجوجل شيت وواتساب =====
 $('#orderForm').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const btn = e.submitter || $('#orderForm button[type="submit"]');
   if (!cart.length) { alert('ضيف منتجات للسلة الأول'); return; }
 
   const f = new FormData(e.target);
-  const total = cart.reduce((a, b) => a + b.qty * products.find(x => x.id === b.id).price, 0);
+  const total = calcTotal();
   const lines = cart.map(it => {
     const p = products.find(x => x.id === it.id);
     return `• ${p.name} | مقاس ${it.size} | ${it.qty} × ${p.price}`;
-  });
-  let printLine = 'الطباعة: من غير طباعة';
-  const printMode = f.get('print');
+  }).join(' - ');
 
-  if (printMode === 'design') {
-    if (!selectedDesign) { alert('اختار التصميم الأول'); return; }
-    printLine = `الطباعة: تصميم "${selectedDesign.name}" (رقم ${selectedDesign.id}) | المكان: ${f.get('place')}`;
-  }
-
-  if (printMode === 'custom') {
-    const pf = $('#printFile').files[0];
-    if (!pf) { alert('ارفع صورة التصميم الأول'); return; }
-    if (pf.size > 8 * 1024 * 1024) { alert('صورة التصميم كبيرة، اختار صورة أصغر من 8 ميجا'); return; }
-    btn.disabled = true; btn.textContent = 'جاري رفع التصميم...';
-    try {
-      const printUrl = await uploadProof(pf);
-      printLine = `الطباعة: تصميم العميل ${printUrl} | المكان: ${f.get('place')}`;
-    } catch (err) {
-      alert('حصلت مشكلة في رفع التصميم، جرّب تاني');
-      btn.disabled = false; btn.textContent = 'ابعت الطلب على واتساب';
-      return;
+  /* 
+    --- كود الطباعة المحفوظ عندك (مخفي لحين تفعيل الخدمة) ---
+    let printLine = 'الطباعة: من غير طباعة';
+    const printMode = f.get('print');
+    if (printMode === 'design' && selectedDesign) {
+      printLine = `الطباعة: تصميم "${selectedDesign.name}" | المكان: ${f.get('place')}`;
     }
-    btn.disabled = false; btn.textContent = 'ابعت الطلب على واتساب';
-  }
+  */
+
+  const orderData = {
+    name: f.get('name'),
+    phone: f.get('phone'),
+    gov: f.get('gov'),
+    address: f.get('address'),
+    items: lines,
+    total: total + ` ${CURRENCY}`,
+    pay: f.get('pay')
+  };
+
+  fetch('https://script.google.com/macros/s/AKfycbwEKGDAh9Cfty6AbmspOjcSsCeFf7NkzB5pv_mnoPh28tpUOToIFHHFgVSj-amLwC8/exec', {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(orderData)
+  }).catch(err => console.log('Sheet Error:', err));
+
   const msg = [
     '🖤 طلب جديد من 2M Hoodies',
     '',
-    ...lines,
+    ...cart.map(it => {
+      const p = products.find(x => x.id === it.id);
+      return `• ${p.name} | مقاس ${it.size} | ${it.qty} × ${p.price}`;
+    }),
     '',
     `الإجمالي: ${total} ${CURRENCY}`,
     '',
     `الاسم: ${f.get('name')}`,
     `الموبايل: ${f.get('phone')}`,
     `المحافظة: ${f.get('gov')}`,
-    `العنوان: ${f.get('address')}` ,  
-    printLine,
+    `العنوان: ${f.get('address')}`,
     `طريقة الدفع: ${f.get('pay')}`
   ].join('\n');
 
@@ -306,6 +432,100 @@ $('#designGrid').addEventListener('click', (e) => {
   selectedDesign = DESIGNS.find(d => d.id === +b.dataset.id);
   document.querySelectorAll('.design').forEach(x => x.classList.toggle('active', x === b));
 });
+function showOffer() {
+  const el = $('#offerBanner');
+  if (!el || !OFFER.on) return;
+  el.hidden = false;
+  el.innerHTML = `🔥 عرض خاص: كل <b>${OFFER.qty}</b> قطع بـ <b>${fmt(OFFER.price)}</b>`;
+}
+showOffer();
+// ===== الشحن المجاني =====
+const FREE_SHIPPING = { on: true, until: '2026-11-04T23:59:59+02:00' };  // ينتهي آخر يوم 3 نوفمبر
+
+function freeShippingActive() {
+  return FREE_SHIPPING.on && Date.now() < new Date(FREE_SHIPPING.until).getTime();
+}
+
+function tickShipping() {
+  const els = document.querySelectorAll('.ship-banner');
+  if (!freeShippingActive()) { els.forEach(el => el.hidden = true); return; }
+  const ms = new Date(FREE_SHIPPING.until).getTime() - Date.now();
+  const d = Math.floor(ms / 86400000);
+  const h = Math.floor((ms % 86400000) / 3600000);
+  const m = Math.floor((ms % 3600000) / 60000);
+  const s = Math.floor((ms % 60000) / 1000);
+  const left = d > 0
+    ? `${d} يوم و ${h} ساعة`
+    : `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  els.forEach(el => {
+    el.hidden = false;
+    el.innerHTML = `🚚 شحن مجاني لكل الطلبات — باقي <b>${left}</b>`;
+  });
+}
+tickShipping();
+setInterval(tickShipping, 1000);
+// ===== عداد تنازلي ينتهي في وقت وتاريخ محدد وثابت للجميع =====
+function updateOfferTimer() {
+  const offerEl = $('#offerBanner');
+  if (!offerEl || !OFFER.on) return;
+
+  // حدد هنا التاريخ والوقت بالظبط (السنة - الشهر - اليومTالساعة:الدقيقة:الثانية)
+  // مثال: العرض ينتهي يوم 5 نوفمبر 2026 الساعة 12 منتصف الليل
+  const targetDate = new Date('2026-11-05T23:59:59').getTime();
+
+  function tick() {
+    const now = new Date().getTime();
+    const diff = targetDate - now;
+
+    if (diff <= 0) {
+      offerEl.innerHTML = `🔥 عرض خاص: كل <b>${OFFER.qty}</b> قطع بـ <b>${fmt(OFFER.price)}</b> (انتهى العرض)`;
+      return;
+    }
+
+    // حساب الأيام، الساعات، الدقائق، والثواني المتبقية
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const mins = Math.floor((diff / 1000 / 60) % 60);
+    const secs = Math.floor((diff / 1000) % 60);
+
+    // لو عايز تعرض الأيام لو العرض طويل، أو تكتفي بالساعات والدقائق:
+    const timeStr = days > 0 
+      ? `${days} يوم و ${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
+      : `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    
+    offerEl.innerHTML = `🔥 عرض خاص: كل <b>${OFFER.qty}</b> قطع بـ <b>${fmt(OFFER.price)}</b> <span class="timer-tag">⏰ ينتهي خلال ${timeStr}</span>`;
+  }
+
+  tick();
+  setInterval(tick, 1000);
+}
+
+updateOfferTimer();
+// ===== زر العودة للأعلى وتحكم الـ Toast =====
+const scrollTopBtn = $('#scrollTopBtn');
+const toastEl = $('#toastNotification');
+
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 400) {
+    scrollTopBtn.classList.add('show');
+  } else {
+    scrollTopBtn.classList.remove('show');
+  }
+});
+
+scrollTopBtn.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// دالة إظهار إشعار السلة السريع
+function showToast(message) {
+  if (!toastEl) return;
+  toastEl.textContent = message;
+  toastEl.classList.add('show');
+  setTimeout(() => {
+    toastEl.classList.remove('show');
+  }, 2500);
+}
 // ===== تشغيل =====
 renderProducts();
 renderCart();
