@@ -53,12 +53,11 @@ const products = [
   { id: 7, name: 'Slate Blue',        price: 550, oldPrice: 850, color: '#4B586B', img: 'images/Slate Blue.jpeg' },
   { id: 8, name: 'Burgundy',        price: 550, oldPrice: 850, color: '#5C2A33', img: 'images/Burgundy.jpeg' },
   { id: 9, name: 'Light Blue',        price: 550, oldPrice: 850, color: '#C5D7E8', img: 'images/Light Blue.jpeg' },
-  { id: 10, name: 'Dark Brown',        price: 550, oldPrice: 850, color: '#3D281F', img: 'images/Dark Brown.jpeg' },
-  { id: 11, name: 'Beige',        price: 550, oldPrice: 850, color: '#E5D4B3', img: 'images/Beige.jpeg' },
-  { id: 12, name: 'Brown',        price: 550, oldPrice: 850, color: '#4A3325', img: 'images/Brown.jpeg' },
-  { id: 13, name: 'Charcoal Gray',        price: 550, oldPrice: 850, color: '#44474D', img: 'images/Charcoal Gray.jpeg' },
-  { id: 14, name: 'Yellow',        price: 550, oldPrice: 850, color: '#F3D86B', img: 'images/yellow.jpeg' },
-  { id: 15, name: 'Pink',        price: 550, oldPrice: 850, color: '#FFC0CB', img: 'images/pink.jpeg' }
+  { id: 10, name: 'Beige',        price: 550, oldPrice: 850, color: '#E5D4B3', img: 'images/Beige.jpeg' },
+  { id: 11, name: 'Brown',        price: 550, oldPrice: 850, color: '#4A3325', img: 'images/Brown.jpeg' },
+  { id: 12, name: 'Charcoal Gray',        price: 550, oldPrice: 850, color: '#44474D', img: 'images/Charcoal Gray.jpeg' },
+  { id: 13, name: 'Yellow',        price: 550, oldPrice: 850, color: '#F3D86B', img: 'images/yellow.jpeg' },
+  { id: 14, name: 'Pink',        price: 550, oldPrice: 850, color: '#FFC0CB', img: 'images/pink.jpeg' }
 ];
 const SIZES = ['M', 'L', 'XL' , '2XL', '3XL'];
 // ===== العرض =====
