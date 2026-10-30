@@ -8,6 +8,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Montserrat:wght@300;400;500&family=Permanent+Marker&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script>
+  try {
+    var t = localStorage.getItem('2m-theme');
+    if (t) document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+</script>
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 </head>
 <body>
@@ -27,6 +33,7 @@
       <a href="#about">عنّا</a>
       <a href="#checkout-section">اطلب</a>
     </nav>
+    <button class="theme-btn" id="themeBtn" aria-label="تغيير الوضع">☀️</button>
     <button class="cart-btn" id="openCart" aria-label="السلة">
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>
       <span class="cart-count" id="cartCount">0</span>

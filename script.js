@@ -521,6 +521,21 @@ function showToast(message) {
     toastEl.classList.remove('show');
   }, 2500);
 }
+// ===== الوضع الفاتح / الغامق =====
+(function () {
+  const btn = $('#themeBtn');
+  const root = document.documentElement;
+  const current = () => root.getAttribute('data-theme') || 'dark';
+  function apply(t) {
+    root.setAttribute('data-theme', t);
+    if (btn) btn.textContent = t === 'light' ? '🌙' : '☀️';
+    try { localStorage.setItem('2m-theme', t); } catch (e) {}
+  }
+  if (btn) {
+    btn.textContent = current() === 'light' ? '🌙' : '☀️';
+    btn.addEventListener('click', () => apply(current() === 'light' ? 'dark' : 'light'));
+  }
+})();
 // ===== تشغيل =====
 renderProducts();
 renderCart();
