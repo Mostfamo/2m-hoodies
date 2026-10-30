@@ -57,8 +57,8 @@ const products = [
   { id: 11, name: 'Beige',        price: 550, oldPrice: 850, color: '#E5D4B3', img: 'images/Beige.jpeg' },
   { id: 12, name: 'Brown',        price: 550, oldPrice: 850, color: '#4A3325', img: 'images/Brown.jpeg' },
   { id: 13, name: 'Charcoal Gray',        price: 550, oldPrice: 850, color: '#44474D', img: 'images/Charcoal Gray.jpeg' },
-  { id: 14, name: 'Yellow',        price: 550, oldPrice: 850, color: '#F3D86B', img: 'images/Yellow.jpeg' },
-  { id: 15, name: 'Pink',        price: 550, oldPrice: 850, color: '#FFC0CB', img: 'images/Pink.jpeg' }
+  { id: 14, name: 'Yellow',        price: 550, oldPrice: 850, color: '#F3D86B', img: 'images/yellow.jpeg' },
+  { id: 15, name: 'Pink',        price: 550, oldPrice: 850, color: '#FFC0CB', img: 'images/pink.jpeg' }
 ];
 const SIZES = ['M', 'L', 'XL' , '2XL', '3XL'];
 // ===== العرض =====
